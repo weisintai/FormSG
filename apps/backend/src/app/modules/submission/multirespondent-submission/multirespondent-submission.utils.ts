@@ -314,6 +314,16 @@ const getQuestionAnswerPairsForOneField = ({
   let answerArray: string[] = []
   const questionAnswerPairs: QuestionAnswerPair[] = []
 
+  // edge case handling for headers
+  if (formField.fieldType === BasicField.Section) {
+    questionAnswerPairs.push({
+      question: questionTitle,
+      answer,
+      fieldType: formField.fieldType,
+    })
+    return questionAnswerPairs
+  }
+
   switch (response.fieldType) {
     case BasicField.Attachment:
       questionTitle = `[Attachment] ${questionTitle}`
@@ -460,7 +470,12 @@ export const getQuestionAnswerPairsForMultipleFields = ({
     const questionTitle = currentFormField.title
     const response = responses[currentFormField._id]
 
-    if (!response || !questionTitle) continue
+    if (
+      (!response && currentFormField.fieldType !== BasicField.Section) || //Allow headers to be included
+      !questionTitle
+    )
+      continue
+
     const questionAnswerPairsForCurrentFormField =
       getQuestionAnswerPairsForOneField({
         formField: currentFormField,
