@@ -1,15 +1,19 @@
 import dedent from 'dedent-js'
 import ejs, { Data } from 'ejs'
 import { BasicField } from 'formsg-shared/types'
+import { NON_RESPONSE_FIELD_SET } from 'formsg-shared/utils/field'
 import { flattenDeep } from 'lodash'
 import moment from 'moment-timezone'
 import { ResultAsync } from 'neverthrow'
 import validator from 'validator'
 
+import { VERIFIED_PREFIX } from 'src/app/modules/submission/email-submission/email-submission.constants'
+
 import { BounceType, EmailRespondentConfirmationField } from '../../../types'
 import { paymentConfig } from '../../config/features/payment.config'
 import { createLoggerWithLabel } from '../../config/logger'
 import { generatePdfFromHtml } from '../../utils/convert-html-to-pdf'
+import { QuestionAnswer } from '../../views/templates/EmailTemplate'
 
 import {
   AutoreplyPdfGenerationError,
@@ -251,3 +255,33 @@ export const generateIssueReportedNotificationHtml = ({
   })
   return safeRenderFile(pathToTemplate, htmlData)
 }
+
+/**
+ * Serialises submission metadata and form responses into a flat JSON array.
+ * 1. Prepends Response ID and Timestamp
+ * 2. Strips non-response fields (Section, Statement, Image) from formQuestionAnswers
+ * 3. Strips [verified] prefixes from question titles, keeps [attachment], [signature], [table]
+ * @param responseId - Submission ID to prepend as the first entry
+ * @param timestamp - Submission timestamp to prepend as the second entry
+ * @param formQuestionAnswers - Question-answer pairs from the mrf form responses
+ * @returns JSON string of the flat array
+ */
+export const buildResponseJson = (
+  responseId: string,
+  timestamp: string,
+  formQuestionAnswers: QuestionAnswer[],
+): string =>
+  JSON.stringify([
+    { question: 'Response ID', answer: responseId },
+    { question: 'Timestamp', answer: timestamp },
+    ...formQuestionAnswers
+      .filter(
+        ({ fieldType }) => !NON_RESPONSE_FIELD_SET.has(fieldType as BasicField),
+      )
+      .map(({ question, answer }) => ({
+        question: question.startsWith(VERIFIED_PREFIX)
+          ? question.slice(VERIFIED_PREFIX.length)
+          : question,
+        answer,
+      })),
+  ])

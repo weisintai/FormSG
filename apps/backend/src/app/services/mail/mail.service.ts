@@ -57,6 +57,7 @@ import {
   SubmissionToAdminHtmlData,
 } from './mail.types'
 import {
+  buildResponseJson,
   generateAutoreplyHtml,
   generateIssueReportedNotificationHtml,
   generateLoginOtpHtml,
@@ -1028,7 +1029,6 @@ export class MailService {
     formId,
     paymentId,
     paymentAmount,
-    useStandardisedEmailTemplate,
   }: {
     email: string
     formTitle: string
@@ -1205,6 +1205,11 @@ export class MailService {
       responseId: responseId.toString(),
       timestamp,
       formQuestionAnswers,
+      responseJson: buildResponseJson(
+        responseId,
+        timestamp,
+        formQuestionAnswers,
+      ),
     }
 
     return this.#sendEmailWithTemplate({
@@ -1247,6 +1252,11 @@ export class MailService {
       timestamp,
       outcome,
       formQuestionAnswers,
+      responseJson: buildResponseJson(
+        responseId,
+        timestamp,
+        formQuestionAnswers,
+      ),
     }
 
     return this.#sendEmailWithTemplate({
