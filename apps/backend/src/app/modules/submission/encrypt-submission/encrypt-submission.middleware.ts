@@ -441,9 +441,7 @@ export const validateStorageSubmission = async (
         meta: logMeta,
         error,
       })
-      const { statusCode, errorMessage } = mapRouteError(error)
-      return res.status(statusCode).json({
-        message: errorMessage,
+      return sendRouteError(res, mapRouteError(error), {
         spcpSubmissionFailure,
       })
     })

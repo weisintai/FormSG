@@ -64,6 +64,8 @@ jest.mock('@opengovsg/myinfo-gov-client', () => ({
 }))
 
 const app = setupApp('/forms', PublicFormsRouter)
+const LOGIN_FAILED_MESSAGE_KEY =
+  'features.publicForm.backendErrors.submission.loginFailed'
 
 describe('public-form.submissions.routes', () => {
   let request: Session
@@ -137,6 +139,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -165,6 +168,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -197,6 +201,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -229,6 +234,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -302,6 +308,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -330,6 +337,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -361,6 +369,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -396,6 +405,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -456,6 +466,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -484,6 +495,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -513,6 +525,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -544,6 +557,7 @@ describe('public-form.submissions.routes', () => {
         expect(response.body).toEqual({
           message:
             'Something went wrong with your login. Please try logging in and submitting again.',
+          messageKey: LOGIN_FAILED_MESSAGE_KEY,
           spcpSubmissionFailure: true,
         })
       })
@@ -1209,6 +1223,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1237,6 +1252,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1269,6 +1285,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1303,6 +1320,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1363,6 +1381,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1391,6 +1410,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1420,6 +1440,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
@@ -1451,6 +1472,7 @@ describe('public-form.submissions.routes', () => {
           expect(response.body).toEqual({
             message:
               'Something went wrong with your login. Please try logging in and submitting again.',
+            messageKey: LOGIN_FAILED_MESSAGE_KEY,
             spcpSubmissionFailure: true,
           })
         })
