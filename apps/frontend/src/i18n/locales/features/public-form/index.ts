@@ -55,6 +55,12 @@ export interface PublicForm {
       }
       payment: {
         invalidSettings: string
+        invalidProducts: string
+        duplicateProduct: string
+        productsChanged: string
+        quantityNotAllowed: string
+        quantityBelowLimit: string
+        quantityAboveLimit: string
         pendingSubmissionSaveFailed: string
         intentCreateFailed: string
         documentUpdateFailed: string

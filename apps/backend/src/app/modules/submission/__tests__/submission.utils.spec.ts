@@ -15,6 +15,7 @@ import {
   IMultirespondentSubmissionSchema,
   SingleAnswerFieldResponse,
 } from '../../../../types'
+import { InvalidPaymentProductsError } from '../../payments/payments.errors'
 import { VerifyJwtError } from '../../spcp/spcp.errors'
 import {
   AttachmentSizeLimitExceededError,
@@ -156,6 +157,51 @@ describe('submission.utils', () => {
         StatusCodes.BAD_REQUEST,
         'Response for the Yes/No field for this approval step is not found',
         'mrf.expectedResponseNotFound',
+      ],
+      [
+        new InvalidPaymentProductsError(
+          'You have selected a duplicate product. Please refresh and try again.',
+          'duplicateProduct',
+        ),
+        StatusCodes.BAD_REQUEST,
+        'You have selected a duplicate product. Please refresh and try again.',
+        'payment.duplicateProduct',
+      ],
+      [
+        new InvalidPaymentProductsError(
+          'There has been a change in the products available. Please refresh and try again.',
+          'productsChanged',
+        ),
+        StatusCodes.BAD_REQUEST,
+        'There has been a change in the products available. Please refresh and try again.',
+        'payment.productsChanged',
+      ],
+      [
+        new InvalidPaymentProductsError(
+          'Selected more than 1 quantity when it is not allowed. Please refresh and try again.',
+          'quantityNotAllowed',
+        ),
+        StatusCodes.BAD_REQUEST,
+        'Selected more than 1 quantity when it is not allowed. Please refresh and try again.',
+        'payment.quantityNotAllowed',
+      ],
+      [
+        new InvalidPaymentProductsError(
+          'Selected an invalid quantity below the limit. Please refresh and try again.',
+          'quantityBelowLimit',
+        ),
+        StatusCodes.BAD_REQUEST,
+        'Selected an invalid quantity below the limit. Please refresh and try again.',
+        'payment.quantityBelowLimit',
+      ],
+      [
+        new InvalidPaymentProductsError(
+          'Selected an invalid quantity above the limit. Please refresh and try again.',
+          'quantityAboveLimit',
+        ),
+        StatusCodes.BAD_REQUEST,
+        'Selected an invalid quantity above the limit. Please refresh and try again.',
+        'payment.quantityAboveLimit',
       ],
     ])(
       'should include message key for migrated submission error %#',

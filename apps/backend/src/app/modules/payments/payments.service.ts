@@ -403,6 +403,7 @@ export const validatePaymentProducts = (
     return err(
       new InvalidPaymentProductsError(
         'You have selected a duplicate product. Please refresh and try again.',
+        'duplicateProduct',
       ),
     )
   }
@@ -426,6 +427,7 @@ export const validatePaymentProducts = (
       return err(
         new InvalidPaymentProductsError(
           'There has been a change in the products available. Please refresh and try again.',
+          'productsChanged',
         ),
       )
     }
@@ -440,6 +442,7 @@ export const validatePaymentProducts = (
       return err(
         new InvalidPaymentProductsError(
           'Selected more than 1 quantity when it is not allowed. Please refresh and try again.',
+          'quantityNotAllowed',
         ),
       )
     }
@@ -455,6 +458,7 @@ export const validatePaymentProducts = (
         return err(
           new InvalidPaymentProductsError(
             `Selected an invalid quantity below the limit. Please refresh and try again.`,
+            'quantityBelowLimit',
           ),
         )
       }
@@ -468,6 +472,7 @@ export const validatePaymentProducts = (
         return err(
           new InvalidPaymentProductsError(
             `Selected an invalid quantity above the limit. Please refresh and try again.`,
+            'quantityAboveLimit',
           ),
         )
       }

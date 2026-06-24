@@ -77,6 +77,17 @@ export const enSG: PublicForm = {
       payment: {
         invalidSettings:
           "The form's payment settings are invalid. Please contact the admin of the form to rectify the issue.",
+        invalidProducts: 'Invalid payment submission',
+        duplicateProduct:
+          'You have selected a duplicate product. Please refresh and try again.',
+        productsChanged:
+          'There has been a change in the products available. Please refresh and try again.',
+        quantityNotAllowed:
+          'Selected more than 1 quantity when it is not allowed. Please refresh and try again.',
+        quantityBelowLimit:
+          'Selected an invalid quantity below the limit. Please refresh and try again.',
+        quantityAboveLimit:
+          'Selected an invalid quantity above the limit. Please refresh and try again.',
         pendingSubmissionSaveFailed:
           'Could not save pending submission. For assistance, please contact the person who asked you to fill in this form.',
         intentCreateFailed:

@@ -292,10 +292,15 @@ const errorMapper: MapRouteError = (
         errorMessageKey: 'features.publicForm.errors.notFound',
       }
     case ResponseModeError:
+      return {
+        statusCode: StatusCodes.BAD_REQUEST,
+        errorMessage: error.message,
+      }
     case InvalidPaymentProductsError:
       return {
         statusCode: StatusCodes.BAD_REQUEST,
         errorMessage: error.message,
+        errorMessageKey: submissionErrorKey(`payment.${error.messageKey}`),
       }
     case FeatureDisabledError:
     case ForbiddenFormError:

@@ -30,8 +30,19 @@ export class PaymentAccountInformationError extends ApplicationError {
   }
 }
 
+export type InvalidPaymentProductsErrorKey =
+  | 'invalidProducts'
+  | 'duplicateProduct'
+  | 'productsChanged'
+  | 'quantityNotAllowed'
+  | 'quantityBelowLimit'
+  | 'quantityAboveLimit'
+
 export class InvalidPaymentProductsError extends ApplicationError {
-  constructor(message = 'Invalid payment submission') {
+  constructor(
+    message = 'Invalid payment submission',
+    readonly messageKey: InvalidPaymentProductsErrorKey = 'invalidProducts',
+  ) {
     super(message, undefined, ErrorCodes.PAYMENT_INVALID_PAYMENT_PRODUCTS)
   }
 }
