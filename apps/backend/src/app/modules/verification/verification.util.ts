@@ -64,6 +64,7 @@ import {
 const logger = createLoggerWithLabel(module)
 const VERIFICATION_BACKEND_ERROR_KEY_PREFIX =
   'features.publicForm.backendErrors.verification'
+const VERIFICATION_GENERIC_ERROR_KEY = `${VERIFICATION_BACKEND_ERROR_KEY_PREFIX}.generic`
 
 /**
  * Evaluates whether a field is verifiable
@@ -215,6 +216,7 @@ export const mapRouteError: MapRouteError = (
     case DatabaseValidationError:
       return {
         errorMessage: coreErrorMsg,
+        errorMessageKey: VERIFICATION_GENERIC_ERROR_KEY,
         statusCode: StatusCodes.BAD_REQUEST,
       }
     case MissingJwtError:
@@ -229,6 +231,7 @@ export const mapRouteError: MapRouteError = (
     case MrfJwtValidationError:
       return {
         errorMessage: coreErrorMsg,
+        errorMessageKey: VERIFICATION_GENERIC_ERROR_KEY,
         statusCode: StatusCodes.BAD_REQUEST,
       }
     case MailSendError:
@@ -255,6 +258,7 @@ export const mapRouteError: MapRouteError = (
     case FormNotFoundError:
       return {
         errorMessage: coreErrorMsg,
+        errorMessageKey: VERIFICATION_GENERIC_ERROR_KEY,
         statusCode: StatusCodes.NOT_FOUND,
       }
     case SmsLimitExceededError:
@@ -269,6 +273,7 @@ export const mapRouteError: MapRouteError = (
     case DatabaseError:
       return {
         errorMessage: coreErrorMsg,
+        errorMessageKey: VERIFICATION_GENERIC_ERROR_KEY,
         statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
       }
     default:
@@ -281,6 +286,7 @@ export const mapRouteError: MapRouteError = (
       })
       return {
         errorMessage: coreErrorMsg,
+        errorMessageKey: VERIFICATION_GENERIC_ERROR_KEY,
         statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
       }
   }

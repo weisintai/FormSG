@@ -118,6 +118,11 @@ describe('Verification controller', () => {
     messageKey: `${VERIFICATION_BACKEND_ERROR_KEY_PREFIX}.${key}`,
     ...(messageParams ? { messageParams } : {}),
   })
+  const expectedGenericVerificationError = () =>
+    expectedVerificationError(
+      'generic',
+      'Sorry, something went wrong. Please refresh and try again.',
+    )
   const MOCK_FORM_ID = new ObjectId().toHexString()
   const MOCK_TRANSACTION_ID = new ObjectId().toHexString()
   const MOCK_FIELD_ID = new ObjectId().toHexString()
@@ -224,9 +229,9 @@ describe('Verification controller', () => {
         MOCK_FORM_ID,
       )
       expect(mockRes.status).toHaveBeenCalledWith(StatusCodes.NOT_FOUND)
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: expect.any(String),
-      })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
 
     it('should return 500 when database error occurs', async () => {
@@ -246,9 +251,9 @@ describe('Verification controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(
         StatusCodes.INTERNAL_SERVER_ERROR,
       )
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: expect.any(String),
-      })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
   })
 
@@ -521,9 +526,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new MalformedParametersError('')),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -578,9 +581,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new SmsSendError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -686,9 +687,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new NonVerifiedFieldTypeError('')),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -718,9 +717,7 @@ describe('Verification controller', () => {
       mockSpOidcServiceClass.extractJwt.mockReturnValueOnce(
         err(new MissingJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -753,9 +750,7 @@ describe('Verification controller', () => {
       mockSpOidcServiceClass.extractJwtPayload.mockReturnValueOnce(
         errAsync(new InvalidJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -789,9 +784,7 @@ describe('Verification controller', () => {
       mockCpOidcServiceClass.extractJwt.mockReturnValueOnce(
         err(new MissingJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -823,9 +816,7 @@ describe('Verification controller', () => {
       mockCpOidcServiceClass.extractJwtPayload.mockReturnValueOnce(
         errAsync(new InvalidJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -868,9 +859,7 @@ describe('Verification controller', () => {
       MockSgidService.extractSgidSingpassJwtPayload.mockReturnValueOnce(
         err(new SgidMissingJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -910,9 +899,7 @@ describe('Verification controller', () => {
       MockSgidService.extractSgidSingpassJwtPayload.mockReturnValueOnce(
         err(new SgidInvalidJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -942,9 +929,7 @@ describe('Verification controller', () => {
       MockMyInfoUtil.extractMyInfoLoginJwt.mockReturnValueOnce(
         err(new MyInfoMissingLoginCookieError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -979,9 +964,7 @@ describe('Verification controller', () => {
       MockMyInfoService.verifyLoginJwt.mockReturnValueOnce(
         err(new MyInfoInvalidLoginCookieError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1012,9 +995,7 @@ describe('Verification controller', () => {
       MockFormService.retrieveFullFormById.mockReturnValueOnce(
         errAsync(new FormNotFoundError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1038,9 +1019,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new TransactionNotFoundError('wad')),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1066,9 +1045,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new FieldNotFoundInTransactionError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1143,7 +1120,9 @@ describe('Verification controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(
         StatusCodes.INTERNAL_SERVER_ERROR,
       )
-      expect(mockRes.json).toHaveBeenCalledWith({ message: expect.any(String) })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
 
     it('should return 500 when database error occurs', async () => {
@@ -1151,9 +1130,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new DatabaseError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1385,9 +1362,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new MalformedParametersError('')),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1442,9 +1417,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new SmsSendError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1550,9 +1523,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new NonVerifiedFieldTypeError('')),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1582,9 +1553,7 @@ describe('Verification controller', () => {
       mockSpOidcServiceClass.extractJwt.mockReturnValueOnce(
         err(new MissingJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1617,9 +1586,7 @@ describe('Verification controller', () => {
       mockSpOidcServiceClass.extractJwtPayload.mockReturnValueOnce(
         errAsync(new InvalidJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1653,9 +1620,7 @@ describe('Verification controller', () => {
       mockCpOidcServiceClass.extractJwt.mockReturnValueOnce(
         err(new MissingJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1687,9 +1652,7 @@ describe('Verification controller', () => {
       mockCpOidcServiceClass.extractJwtPayload.mockReturnValueOnce(
         errAsync(new InvalidJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1732,9 +1695,7 @@ describe('Verification controller', () => {
       MockSgidService.extractSgidSingpassJwtPayload.mockReturnValueOnce(
         err(new SgidMissingJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1774,9 +1735,7 @@ describe('Verification controller', () => {
       MockSgidService.extractSgidSingpassJwtPayload.mockReturnValueOnce(
         err(new SgidInvalidJwtError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1806,9 +1765,7 @@ describe('Verification controller', () => {
       MockMyInfoUtil.extractMyInfoLoginJwt.mockReturnValueOnce(
         err(new MyInfoMissingLoginCookieError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1843,9 +1800,7 @@ describe('Verification controller', () => {
       MockMyInfoService.verifyLoginJwt.mockReturnValueOnce(
         err(new MyInfoInvalidLoginCookieError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1876,9 +1831,7 @@ describe('Verification controller', () => {
       MockFormService.retrieveFullFormById.mockReturnValueOnce(
         errAsync(new FormNotFoundError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1902,9 +1855,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new TransactionNotFoundError('wad')),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -1930,9 +1881,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new FieldNotFoundInTransactionError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -2007,7 +1956,9 @@ describe('Verification controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(
         StatusCodes.INTERNAL_SERVER_ERROR,
       )
-      expect(mockRes.json).toHaveBeenCalledWith({ message: expect.any(String) })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
 
     it('should return 500 when database error occurs for payment otp', async () => {
@@ -2015,9 +1966,7 @@ describe('Verification controller', () => {
       MockVerificationService.sendNewOtp.mockReturnValueOnce(
         errAsync(new DatabaseError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleGenerateOtp(
@@ -2113,9 +2062,7 @@ describe('Verification controller', () => {
         MockSubmissionService.getSubmissionMetadata.mockReturnValueOnce(
           okAsync(null), // Submission not found for this form
         )
-        const expectedResponse = {
-          message: 'Sorry, something went wrong. Please refresh and try again.',
-        }
+        const expectedResponse = expectedGenericVerificationError()
 
         // Act
         await VerificationController._handleGenerateOtp(
@@ -2175,9 +2122,7 @@ describe('Verification controller', () => {
           } as any),
         )
 
-        const expectedResponse = {
-          message: 'Sorry, something went wrong. Please refresh and try again.',
-        }
+        const expectedResponse = expectedGenericVerificationError()
 
         // Act
         await VerificationController._handleGenerateOtp(
@@ -2216,9 +2161,7 @@ describe('Verification controller', () => {
             },
           } as any),
         )
-        const expectedResponse = {
-          message: 'Sorry, something went wrong. Please refresh and try again.',
-        }
+        const expectedResponse = expectedGenericVerificationError()
 
         // Act
         await VerificationController._handleGenerateOtp(
@@ -2259,9 +2202,7 @@ describe('Verification controller', () => {
           },
           cookies: {}, // No MRF cookie
         })
-        const expectedResponse = {
-          message: 'Sorry, something went wrong. Please refresh and try again.',
-        }
+        const expectedResponse = expectedGenericVerificationError()
 
         // Act
         await VerificationController._handleGenerateOtp(
@@ -2300,9 +2241,7 @@ describe('Verification controller', () => {
             [MOCK_COOKIE_NAME]: 'invalid-jwt-token',
           },
         })
-        const expectedResponse = {
-          message: 'Sorry, something went wrong. Please refresh and try again.',
-        }
+        const expectedResponse = expectedGenericVerificationError()
 
         // Act
         await VerificationController._handleGenerateOtp(
@@ -2329,9 +2268,7 @@ describe('Verification controller', () => {
         MockSubmissionService.getSubmissionMetadata.mockReturnValueOnce(
           errAsync(new DatabaseError('Submission not found')),
         )
-        const expectedResponse = {
-          message: 'Sorry, something went wrong. Please refresh and try again.',
-        }
+        const expectedResponse = expectedGenericVerificationError()
 
         // Act
         await VerificationController._handleGenerateOtp(
@@ -2454,9 +2391,9 @@ describe('Verification controller', () => {
         MockVerificationService.resetFieldForTransaction,
       ).not.toHaveBeenCalled()
       expect(mockRes.status).toHaveBeenCalledWith(StatusCodes.NOT_FOUND)
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: expect.any(String),
-      })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
 
     it('should return 404 when transaction is not found', async () => {
@@ -2480,9 +2417,9 @@ describe('Verification controller', () => {
         MockVerificationService.resetFieldForTransaction,
       ).toHaveBeenCalledWith(resetFieldForTransactionToHaveBeenCalledWith)
       expect(mockRes.status).toHaveBeenCalledWith(StatusCodes.NOT_FOUND)
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: expect.any(String),
-      })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
 
     it('should return 404 when field is not found', async () => {
@@ -2506,9 +2443,9 @@ describe('Verification controller', () => {
         MockVerificationService.resetFieldForTransaction,
       ).toHaveBeenCalledWith(resetFieldForTransactionToHaveBeenCalledWith)
       expect(mockRes.status).toHaveBeenCalledWith(StatusCodes.NOT_FOUND)
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: expect.any(String),
-      })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
 
     it('should return 500 when database error occurs', async () => {
@@ -2531,9 +2468,9 @@ describe('Verification controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(
         StatusCodes.INTERNAL_SERVER_ERROR,
       )
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: expect.any(String),
-      })
+      expect(mockRes.json).toHaveBeenCalledWith(
+        expectedGenericVerificationError(),
+      )
     })
   })
 
@@ -2635,9 +2572,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new MissingHashDataError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2662,9 +2597,7 @@ describe('Verification controller', () => {
       MockFormService.retrieveFormById.mockReturnValueOnce(
         errAsync(new FormNotFoundError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2687,9 +2620,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new TransactionNotFoundError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2714,9 +2645,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new FieldNotFoundInTransactionError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2831,9 +2760,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new HashingError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2860,9 +2787,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new DatabaseError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2941,9 +2866,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new MissingHashDataError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2968,9 +2891,7 @@ describe('Verification controller', () => {
       MockFormService.retrieveFormById.mockReturnValueOnce(
         errAsync(new FormNotFoundError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -2993,9 +2914,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new TransactionNotFoundError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -3020,9 +2939,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new FieldNotFoundInTransactionError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -3137,9 +3054,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new HashingError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(
@@ -3166,9 +3081,7 @@ describe('Verification controller', () => {
       MockVerificationService.verifyOtp.mockReturnValueOnce(
         errAsync(new DatabaseError()),
       )
-      const expectedResponse = {
-        message: 'Sorry, something went wrong. Please refresh and try again.',
-      }
+      const expectedResponse = expectedGenericVerificationError()
 
       // Act
       await VerificationController._handleOtpVerification(

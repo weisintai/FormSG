@@ -16,6 +16,7 @@ export interface PublicForm {
       invalidNumber: string
       mailSend: string
       outdatedForm: string
+      generic: string
     }
     submission: {
       saveFailed: string

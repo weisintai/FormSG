@@ -21,6 +21,7 @@ export const enSG: PublicForm = {
         'Sorry, we were unable to send the email out at this time. Please ensure that the email entered is correct. If this problem persists, please refresh and try again later.',
       outdatedForm:
         'Sorry, this form is outdated. Please refresh your browser to get the latest version of the form',
+      generic: 'Sorry, something went wrong. Please refresh and try again.',
     },
     submission: {
       saveFailed: 'Failed to save submission. Please try again later.',
