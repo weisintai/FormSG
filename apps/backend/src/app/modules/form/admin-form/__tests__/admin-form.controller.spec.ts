@@ -4224,6 +4224,7 @@ describe('admin-form.controller', () => {
       // Should return specific message.
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Form must be public to be copied',
+        messageKey: 'features.adminForm.backendErrors.template.mustBePublic',
       })
       expect(MockUserService.getPopulatedUserById).toHaveBeenCalledWith(
         MOCK_USER_ID,
@@ -6753,6 +6754,7 @@ describe('admin-form.controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(404)
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Field to modify not found',
+        messageKey: 'features.adminForm.backendErrors.fields.notFound',
       })
       expect(MockAdminFormService.updateFormField).toHaveBeenCalledWith(
         MOCK_FORM,
@@ -7515,6 +7517,7 @@ describe('admin-form.controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(404)
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Field to modify not found',
+        messageKey: 'features.adminForm.backendErrors.fields.notFound',
       })
       expect(MockAdminFormService.duplicateFormField).toHaveBeenCalledWith(
         MOCK_FORM,
@@ -7801,6 +7804,7 @@ describe('admin-form.controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(404)
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Field to modify not found',
+        messageKey: 'features.adminForm.backendErrors.fields.notFound',
       })
       expect(MockAdminFormService.reorderFormField).toHaveBeenCalledWith(
         MOCK_FORM,
@@ -8475,6 +8479,7 @@ describe('admin-form.controller', () => {
       expect(mockRes.status).toHaveBeenCalledWith(404)
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Field to modify not found',
+        messageKey: 'features.adminForm.backendErrors.fields.notFound',
       })
       expect(MockAdminFormService.deleteFormField).toHaveBeenCalledWith(
         MOCK_FORM,
