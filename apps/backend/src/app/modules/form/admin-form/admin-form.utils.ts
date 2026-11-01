@@ -89,6 +89,22 @@ export const mapRouteError = (
   error: ApplicationError,
   coreErrorMessage?: string,
 ): ErrorResponseData => {
+  const errorResponse = _mapRouteError(error, coreErrorMessage)
+  // The error's own i18n only describes error.message, so skip it when a case
+  // returned a different message (e.g. the generic default); a key set by the
+  // case itself always wins
+  if (errorResponse.errorMessage !== error.message) return errorResponse
+  return {
+    ...errorResponse,
+    errorMessageKey: errorResponse.errorMessageKey ?? error.messageKey,
+    errorMessageParams: errorResponse.errorMessageParams ?? error.messageParams,
+  }
+}
+
+const _mapRouteError = (
+  error: ApplicationError,
+  coreErrorMessage?: string,
+): ErrorResponseData => {
   switch (error.constructor) {
     case SmsLimitExceededError:
     case SavedViewLimitError:
@@ -100,7 +116,6 @@ export const mapRouteError = (
       return {
         statusCode: StatusCodes.BAD_REQUEST,
         errorMessage: error.message,
-        errorMessageKey: error.messageKey,
       }
     case CreatePresignedPostError:
     case DeleteFirstWorkflowStepError:
@@ -112,7 +127,6 @@ export const mapRouteError = (
       return {
         statusCode: StatusCodes.NOT_FOUND,
         errorMessage: error.message,
-        errorMessageKey: error.messageKey,
       }
     case FormNotFoundError:
     case LogicNotFoundError:
@@ -188,13 +202,11 @@ export const mapRouteError = (
       return {
         statusCode: StatusCodes.BAD_REQUEST,
         errorMessage: error.message,
-        errorMessageKey: error.messageKey,
       }
     case PaymentProductAmountLimitExceededError:
       return {
         statusCode: StatusCodes.BAD_REQUEST,
         errorMessage: error.message,
-        errorMessageKey: error.messageKey,
       }
     case InvalidPaymentAmountError:
       return {
