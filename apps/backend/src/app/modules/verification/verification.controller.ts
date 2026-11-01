@@ -13,9 +13,10 @@ import { errAsync, okAsync, Result } from 'neverthrow'
 
 import config from '../../config/config'
 import { createLoggerWithLabel } from '../../config/logger'
+import { buildErrorDto } from '../../utils/i18n-error'
 import { generateOtpWithHash } from '../../utils/otp'
 import { createReqMeta, getRequestIp } from '../../utils/request'
-import { ControllerHandler, ErrorResponseData } from '../core/core.types'
+import { ControllerHandler } from '../core/core.types'
 import { setFormTags } from '../datadog/datadog.utils'
 import * as FormService from '../form/form.service'
 import { MyInfoService } from '../myinfo/myinfo.service'
@@ -31,16 +32,6 @@ import { Transaction } from './verification.types'
 import { mapRouteError } from './verification.util'
 
 const logger = createLoggerWithLabel(module)
-
-const buildErrorDto = ({
-  errorMessage,
-  errorMessageKey,
-  errorMessageParams,
-}: ErrorResponseData): ErrorDto => ({
-  message: errorMessage,
-  ...(errorMessageKey ? { messageKey: errorMessageKey } : {}),
-  ...(errorMessageParams ? { messageParams: errorMessageParams } : {}),
-})
 
 /**
  * Handler for POST /forms/:formId/fieldverifications
